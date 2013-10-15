@@ -1,4 +1,4 @@
-\documentclass[12pt,twocolumn]{article}
+\documentclass[10pt,twocolumn]{article}
 \usepackage{url,graphicx,tabularx,array,amsmath}
 \usepackage{enumitem}
 \setlist{nolistsep} %-- don't have lists take up shitloads of room
@@ -10,6 +10,8 @@ bottom = 0.50cm,
 left   = 0.50cm,
 right  = 0.50cm]{geometry}
 
+\usepackage[compact]{titlesec}
+\titlespacing{\section}{0pt}{0pt}{0pt}
 %-- Commands for header
 \renewcommand{\title}[1]{\textbf{#1}}
 \renewcommand{\line}{\begin{tabularx}{\textwidth}{X>{\raggedleft}X}\hline\\\end{tabularx}\\[-0.5cm]}
@@ -31,7 +33,7 @@ $T(n) = a * T\left(\frac{n}{b}\right) + d*f(n)$
 \section{Big O}
 $ f(x) \mbox{ is } O(g(x)) => \lim_{x \to \infty}{\frac{f(x)}{g(x)}} \le c \mbox{ for some constant c}$\\
 $ f(x) \mbox{ is } \Omega(g(x)) => \lim_{x \to \infty}{\frac{f(x)}{g(x)}} \ge c \mbox{ for some constant c}$\\
-$ f(x) \mbox{ is } \Theta(g(x)) => \lim_{x \to \infty}{\frac{f(x)}{g(x)}} = c \mbox{ for some constant c}$\\
+$ f(x) \mbox{ is } \Theta(g(x)) => \lim_{x \to \infty}{\frac{f(x)}{g(x)}} = c \mbox{ for some constant c}$
 
 \section{Random Facts}
 \begin{enumerate}
@@ -81,7 +83,7 @@ Claim: The subtree rooted at v has at least 2b(v)-1internal nodes
 \subsection{Treaps}
 Generate heap-key h at random.  Insert $(k, h)$ into a treap -- respects tree order for k, and heap order for h\\
 Lemma: If there are no repeated values, the treap is unique\\
-Proof: Trivial for 1 pair, but for more than one pair, take min heap key as root, and partition by tree key.  Each subtree is unique by induction\\
+Proof: Trivial for 1 pair, but for more than one pair, take min heap key as root, and partition by tree key.  Each subtree is unique by induction
 
 \subsection{LCA}
 Given rooted tree T, preprocess it to support queries\\
@@ -93,7 +95,7 @@ Stuff before u | u | u and stuff below u | u | stuff after u and before v | v | 
     A                       X             Z
 X must contain the LCA, called w, of u and v.  First occurrence of w is in A and the last occurrence is in Z.
 Everything between these occurrences are in w’s subtree, so they are at least as deep as w.  So w is the shallowest node in X.\\
-
+RMQ \& LCA - can be solved in $O(n)$ preprocess $O(1)$ query. LCA(Cartesian Tree(Array)) = RMQ(Array)\\
 
 \subsection{Minimal Spanning Tree}
 Greedy Algorithm
@@ -115,26 +117,13 @@ Kruskall's Algorithm
 
 Use Union Find for Step \#2. Complexity $m \log n$, where $m$ is the number of edges.
 
-\subsection{Floyd's Algorithm}
-\begin{enumerate}
-    \item Floyd's algorithm computes all pairs shortest path given a graph without negative cycles.
-    \item It runs in $O(n^3)$ time, takes $O(n^2)$ space.
-    \item It sets all distances to $\inf$. Visits each node, and updates the distance to the node if we have a shorter path.
-\end{enumerate}
+\subsection{Cliques}
 
 Clique is a subgraph in a graph in which all nodes are connected to each other directly.
 Independent set is a subgraph in a graph in which no nodes are connected to each other at all.
 
 MAX-CLIQUE - Iterate from i=n to 1 and call Clique(G, i) on it
 FIND-CLIQUE - remove nodes, and check to see if Clique still exists
-
-LCA - Lowest Common Ancestor
-RMQ - Range Minimum Query
-
-Euler Tour - Write down each node as you visit it during an in order traversal. Size 2n - 1.
-Cartesian Trees - An in order traversal of the tree should return the input array. Every node must be smaller than its children. Construction takes $O(n)$.
-
-RMQ \& LCA - can be solved in $O(n)$ preprocess $O(1)$ query. LCA(Cartesian Tree(Array)) = RMQ(Array)
 
 \subsection{DFS}
 \begin{enumerate}
@@ -145,18 +134,7 @@ RMQ \& LCA - can be solved in $O(n)$ preprocess $O(1)$ query. LCA(Cartesian Tree
     \item Strongly Connected Components - Top Sort, reverse edges, run DFS in order of Top Sort.
 \end{enumerate}
 
-\subsection{Integers}
-
-Interface for these structures is as follows
-\begin{enumerate}
-    \item Insert(x $\in$ U)
-    \item Delete(x $\in$ S)
-    \item Predecessor(x $\in$ U)
-    \item Successor(x $\in$ U)
-    \item w here is the number of bits in your key (32 for integers).
-    \item N here is the maximum range of your key. ($2^{32}$ for integers).
-    \item n here is the number of elements in your data structure. (like $O(n)$ time to insert into a linked list).
-\end{enumerate}
+\subsection{Van emde Boas Trees}
 
 Van emde Boas Trees - Does everything in $O(\log w)$ or $O(\log \log N)$ time.
 
@@ -179,46 +157,17 @@ To successor a number, you compare to min/max. If it's between min and max, you 
 
 The trick here is that if you make one recursive call on input of size $O(\sqrt{N}$, you get $O(\log \log N)$ time.
 
-\subsection{NP Completeness}
-\begin{enumerate}
-    \item P is a subset of NP. It has a polynomial length proof and is solveable in polynomial item.
-    \item A decision problem is in NP if it has a polynomial length proof and is checkable in polynomial time.
-    \item NP-Complete means any NP-Complete problem can be reduced to any other NP-Complete problem.
-    \item NP-Hard is as hard as NP-Complete.
-    \item Co-NP Sceptic can prove no to a solution.
-    \item IS reduced to VC.
-    \item Hamil-cycle reduced to TSP.
-    \item 3 SAT reduced to IS.
-\end{enumerate}
-
-\subsection{ Is DNF in P? }
-DNF is in P because we have a solution for the problem: is $\alpha$ satisfiable?
-
-Since the structure of $\alpha$ is $\alpha_1$ $\bigvee$ $\dots$ $\alpha_k$, we can check if $\alpha$ is satisfiable if any one of $\alpha_1$ $\dots$ $\alpha_k$ are satisfiable. In the worst case, we will have to check $k$ different values for satisfiability.
-To check for satisfiability in any of $\alpha_1$ $\dots$ $\alpha_k$, we know that each value has the structure $\alpha_{11}$ $\bigwedge$ $\dots$ $\alpha_{ij}$. The only way this boolean formula can be unsatisfiable if there is a contradiction somewhere such as $p = \neg p$. To check for a contradiction for each value in the boolean formula, we have to check against every other value in the formula. We end up doing $O(n^2)$ work.
-In the end, we do a total of $O(k \times n^2)$ work and this is in $P$.
-
-\subsection{ Is DNF in NP? }
-The DNF problem is asking if $\alpha$ is satisfiable and as proven in class, the satisfiability(SAT) problem is in NP. Since DNF is a more specific version of SAT , we know that DNF reduces to SAT and it is in NP.
-
-\subsection{ Is DNF in NPC? }
-We do not know if SAT is in P and we do have a solution for DNF and thus it is in P. The three conditions for NPC are that is in NP, which DNF is, that it is a decision problem, which DNF is, and that all NP problems reduce down to DNF. If all problems in NP were reduced to DNF, then SAT could be solved in P and we do not know of a solution yet so if $P = NP$ then DNF is in NPC, but as of now we canot conclude if DNF is in NPC or not.
-DNF is in NPC iff $P = NP$ 
-
 \section{ Show that Vector Cover is in NPC }
-Vertex Cover is defined as a set of nodes such that every edge in the graph is incident to atleast one node in the set. 
+Vertex Cover is defined as a set of nodes such that every edge in the graph is incident to at least one node in the set.
 \subsection{Converting to a Decision Problem}
 For this problem, we will consider the decision version of the problem defined as follows:\\
-\\
 Input: A graph $G$, and an integer $k$\\
-Output: Yes, if $G$ contains a vertex cover of size $k$, no otherwise.\\
+Output: Yes, if $G$ contains a vertex cover of size $k$, no otherwise.
 
 \subsection{k-independent set}
 The k-independent set decision problem is defined as follows:\\
-\\
 Input: A graph $G$, and an integer $k$\\
 Output: Yes, if $G$ contains an independent set of size $k$, no otherwise.\\
-\\
 \subsection{Claim: The k-independent set problem reduces to the Vertex Cover problem.}
 Let's assume we have a polynomial time solution to the k-independent set problem.\\
 Let's assume that we have a vertex cover $V$ in the graph $G$ of size $k$. This means that every edge in the graph is incident to one of the nodes in $V$. \\
@@ -226,12 +175,11 @@ Let's consider the set $V' = G - V$. No two nodes in $V'$ have an edge between t
 This means that $V'$ is a independent set of length $n-k$.\\
 Hence, if we can solve the Vertex Cover problem in polynomial time, we can solve the k-independent set problem is polynomial time as well.
 
-\section{ Minimum Degree Spanning Tree }
+\section{ Min Degree Spanning Tree }
 \subsection{Modifying the problem into a decision problem}
 Here is the modification to MDST:\\
 Input: A graph $G$, and an integer $k$.\\
 Output: Yes, if the graph has a spanning tree where each node has a degree of at most $k$.\\
-\\
 \subsection{Modified MDST is NP-Complete}
 We will prove that Hamiltonian Cycle reduces to the modified MDST.\\
 Let's say we had a solution for the modified MDST problem.\\

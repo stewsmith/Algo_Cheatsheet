@@ -21,19 +21,14 @@ right  = 0.50cm]{geometry}
 
 \section{Master Theorem}
 Given $T(1) = c$.\\
-\[T(n) = a * T\left(\frac{n}{b}\right) + d*f(n), \mbox{for multiplicative f}\]
-\begin{align}
-    \Theta(n^{\log_{b} a}) \mbox{ if }a \ge f(b)\\
-    \Theta(f(n)) \mbox{ if } f(b) > a\\
-    \Theta(n^{\log_{b} a}* \log n) \mbox{ if } f(b) = a
-\end{align}
-\section{Multiplicative}
-$f(x)$ is multiplicative iff $f(xy) =  f(x) * f(y)$.\\
-For example, $f(x) = x^2$ is multiplicative.\\
-$f(x) = 2x$ is not multiplicative.
+$T(n) = a * T\left(\frac{n}{b}\right) + d*f(n)$
+\begin{enumerate}
+    \item $(n^{\log_{b} a}) \mbox{ if }a \ge f(b)$
+    \item $(f(n)) \mbox{ if } f(b) > a$
+    \item $(n^{\log_{b} a}* \log n) \mbox{ if } f(b) = a$
+\end{enumerate}
 
 \section{Big O}
-
 $ f(x) \mbox{ is } O(g(x)) => \lim_{x \to \infty}{\frac{f(x)}{g(x)}} \le c \mbox{ for some constant c}$\\
 $ f(x) \mbox{ is } \Omega(g(x)) => \lim_{x \to \infty}{\frac{f(x)}{g(x)}} \ge c \mbox{ for some constant c}$\\
 $ f(x) \mbox{ is } \Theta(g(x)) => \lim_{x \to \infty}{\frac{f(x)}{g(x)}} = c \mbox{ for some constant c}$\\
@@ -44,10 +39,9 @@ $ f(x) \mbox{ is } \Theta(g(x)) => \lim_{x \to \infty}{\frac{f(x)}{g(x)}} = c \m
     \item Bubble sort is worst case $\Theta(n^2)$ and best case $\Theta(n)$ and average case $\Theta(n^2)$ - Stable, In place
     \item Merge sort is $\Theta(n \log n)$ for all cases. - Stable, Not in place
     \item Quick sort is worst case $\Theta(n^2)$ and best case $\Theta(n \log n)$. - Not stable, In place
-    \item Randomized quick sort is expected $\Theta(n \log n)$. Same as quicksort
-    \item You can sort (comparitively) no faster than $O(n \log n)$
+    \item You can comparison sort no faster than $O(n \log n)$
         \begin{enumerate}
-            \item A decision tree for sorting has $>= n!$ leaves. This is because we have at least $n!$ different inputs for a sorting algorithm (one for each permutation of input).
+            \item A decision tree for sorting has $>= n!$ leaves.
             \item Minimum average depth of a tree with $k$ leaves is $\Omega(\log k)$. So if a decision tree has $n!$ leaves, it must have $\log n!$ depth, which is $\Omega(n \log n)$.
         \end{enumerate}
     \item Non Comparision Sorting
@@ -71,9 +65,34 @@ This takes in an array, and finds the $k$th largest element in the array.
     \item A subgraph is strongly connected if you can get from all nodes in it to all other nodes.
     \item A subgraph is weakly connected if its directed, but would be strongly connected if it was undirected.
     \item Trees have $n-1$ edges. Have at most $n-1$ leaves. Has an average depth of $\log_2 n$
-    \item Adjacency Matrix is used to represent dense graphs, Adjacency linked lists are used to represent sparse graphs.
 \end{enumerate}
 
+\subsection{Red Black Trees}
+A binary tree such that:
+\begin{enumerate}
+\item Every node is red or black
+\item Every leaf is black
+\item The children of red nodes are black
+\item Every simple path from a node to a descendent leaf contains the same number of black nodes
+\end{enumerate}
+b(v) = number of black nodes from v to a leaf, not including v
+Claim: The subtree rooted at v has at least 2b(v)-1internal nodes
+
+\subsection{Treaps}
+Generate heap-key h at random.  Insert $(k, h)$ into a treap -- respects tree order for k, and heap order for h\\
+Lemma: If there are no repeated values, the treap is unique\\
+Proof: Trivial for 1 pair, but for more than one pair, take min heap key as root, and partition by tree key.  Each subtree is unique by induction\\
+
+\subsection{LCA}
+Given rooted tree T, preprocess it to support queries\\
+Query: LCA(u, v) return the deepest node that is an ancestor of u and v\\
+Euler Tour:
+2n - 1 -- Visit each edge twice, way down and on the way up\\
+A is the smallest depth between occurrence of I, J\\
+Stuff before u | u | u and stuff below u | u | stuff after u and before v | v | … | v | …\\
+    A                       X             Z
+X must contain the LCA, called w, of u and v.  First occurrence of w is in A and the last occurrence is in Z.
+Everything between these occurrences are in w’s subtree, so they are at least as deep as w.  So w is the shallowest node in X.\\
 
 
 \subsection{Minimal Spanning Tree}
@@ -95,14 +114,6 @@ Kruskall's Algorithm
 \end{enumerate}
 
 Use Union Find for Step \#2. Complexity $m \log n$, where $m$ is the number of edges.
-
-\subsection{Dijkstras Algorithm}
-\begin{enumerate}
-    \item Assume we have shortest paths for everything we've seen so far
-    \item Choose the edge that minimizes the full path to a vertex we haven't seen yet.
-    \item $O(n^2)$ to find paths from one node to all others, $O(n^3)$ to find for all nodes.
-    \item Basically, just like Greedy, but we minimize path to node + new edge, not just new edge
-\end{enumerate}
 
 \subsection{Floyd's Algorithm}
 \begin{enumerate}

@@ -103,7 +103,18 @@ Stuff before u | u | u and stuff below u | u | stuff after u and before v | v | 
     A                       X             Z
 X must contain the LCA, called w, of u and v.  First occurrence of w is in A and the last occurrence is in Z.
 Everything between these occurrences are in w’s subtree, so they are at least as deep as w.  So w is the shallowest node in X.\\
-RMQ \& LCA - can be solved in $O(n)$ preprocess $O(1)$ query. LCA(Cartesian Tree(Array)) = RMQ(Array)\\
+RMQ \& LCA - can be solved in $O(n)$ preprocess $O(1)$ query.
+
+\subsection{Level Ancestor}
+Query - LA(u, l) --> ancesotr of u with depth l\\
+Pointers -- point to ancestors with depths are a power of 2 less than your depth [O(nlogn), O(nlogn)]\\
+Path decomposition (long path) -- Double long Path -- twice the size with ancestors above.
+Home path of node is unique path where node is in the bottom half of array.\\
+Lemma: Let u be any node and let v be the top node in u's home path.  Then height(v) $\geq$ 2height(u) or v is the root.
+Proof:Distance from v to bottom of this array is at least twice the distance of u to the bottom if |green array| = |red array|.  If not equal then v is the root
+Prep: O(n)
+Query: O(logn)  because height(root) n\\
+Combine pointer and decomp to achieve [O(nlogn), O(1)]
 
 \subsection{Minimal Spanning Tree}
 Greedy Algorithm
@@ -114,6 +125,13 @@ Greedy Algorithm
     \item loop over steps 2-3 $O(n)$
 \end{enumerate}
 $O(n^2)$ total\\
+
+\subsection{Cartesian Trees}
+Root - min element of A A[i].  Left subtree - Cartesian Tree on A[1] ... A[i-1]
+Right subtree - Cartesian Tree on A[i + 1] ... A[n]\\
+Constructed in O(n) time.
+Reduce RMQ to LCA put element of A into Cartesian Tree.
+
 
 
 Kruskall's Algorithm

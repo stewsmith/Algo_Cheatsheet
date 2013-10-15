@@ -48,8 +48,16 @@ $ f(x) \mbox{ is } \Theta(g(x)) => \lim_{x \to \infty}{\frac{f(x)}{g(x)}} = c \m
         \end{enumerate}
     \item Non Comparision Sorting
         \begin{enumerate}
-            \item Bucket Sort/Bin Sort - hash your key to a bucket. Add it to the linked list for the hashed bucket. Now iterate through buckets, and print out each linked list in order. Requires a bounded input set. $\Theta(n)$ where $n$ is the number of possible inputs. - Stable, Not in place
-            \item Radix Sort - Bin Sort based on the least significant digit until you run out of digits. Requires a bounded input set. If we sort $n$ numbers in base $m$ and they are each $k$ digits long, it takes $O(k(n + m))$ - Stable, Not in place
+            \item Bucket Sort/Bin Sort - hash your key to a bucket. Add it to the linked list for the hashed bucket. Now iterate through buckets, and print out each linked list in order. Requires a bounded input set. $\Theta(n+m)$ where $m$ is the number of bins. - Stable, Not in place
+            \item Radix Sort - Bin Sort based on the least significant digit until you run out of digits.
+            Requires a bounded input set. If we sort $n$ numbers in base $m$ and they are each $k$ digits long,
+            it takes $O(k(n + m))$ - Stable, Not in place
+            Proof by induction -- if digits are the same then they are already sorted
+            O(wlogb(n+b)) we get to choose b
+            for bn: O(wblogb) --make b as small as possible
+            How long to sort n numbers in range [n2]?
+            w = 2logn
+            O(n) -- 2 digits in base n
         \end{enumerate}
 \end{enumerate}
 

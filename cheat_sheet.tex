@@ -132,8 +132,6 @@ Right subtree - Cartesian Tree on A[i + 1] ... A[n]\\
 Constructed in O(n) time.
 Reduce RMQ to LCA put element of A into Cartesian Tree.
 
-
-
 Kruskall's Algorithm
 \begin{enumerate}
     \item Sort edges by weight. $O(logn^m) = O(m\log{n})$
@@ -163,13 +161,33 @@ FIND-CLIQUE - remove nodes, and check to see if Clique still exists
 \subsection{Van emde Boas Trees}
 
 Van emde Boas Trees - Does everything in $O(\log w)$ or $O(\log \log N)$ time.
-
 Fusion Trees - Do everything in $O(\log_{w}{n})$ time or $O(\frac{\log{n}}{\log{w}})$ time.
-
 You can sort using these in $n * $min$(\log w, \log_{w}{n})$ time.
-
-Both take $O(N)$ space.
-
+Both take $O(N)$ space.\\
+Delete(V, x=(c, i)):\\
+\begin{enumerate}
+    \item if(x = V.min)
+        \begin{enumerate}
+            \item c = V.summary.min
+            \item if c = NONE: V.min = NONE; return; (now empty)
+            \item x = V.min = (c, i = V.cluster[c].min)(unstore new min)
+        \end{enumerate}
+    \item Delete(V.cluster[c], i)
+    \item if V.cluster[c].min = NONE: (empty now )
+        \begin{enumerate}
+            \item Delete(V.summary, c) (previous call O(1))
+        \end{enumerate}
+    \item if V.summary.min == NONE: V.max = V.min
+    \item else: c' = V.summary.max, V.max = (c', V.cluster[c'].max)
+\end{enumerate}
+Delete(V; x = hc; ii), we start with the case in which x is the minimum
+element. If the max is also x, then we can just delete this element by setting V.min and V.max to
+None. Otherwise, we have to nd the new min, which is hV.summary.min; V.cluster(V.summary.min).min
+(note that the minimum is not stored elsewhere), delete it, and set it as the new V.min. To delete x if
+x is not V.min, we rst recursively delete i from V.cluster(c):i. If V.cluster(c) is now empty, then this
+would have taken constant time, and now we must recursively delete c from V.summary. Finally, we
+3must update V.max. If V.summary is empty, then there is only one element in V , and V.max must
+be set to V.min. Otherwise, V.max is now hV.summary.max; V.cluster(V.summary.max):maxi).\\
 A van emde boas tree that stores $N$ things contains
 \begin{enumerate}
     \item min and max of its elements.
@@ -182,24 +200,23 @@ To insert/delete a number, you split up the higher and lower order bits of the i
 To successor a number, you compare to min/max. If it's between min and max, you split the bits and index with high order bits into a bucket. Compare to min/max of the bucket. If it's between min/max, recursively call successor on bucket using low order bits. If it's less than min, return min. If it's greater than max, recursively call the summary widget using the high order bits to find the next non empty bucket and return its min.
 
 The trick here is that if you make one recursive call on input of size $O(\sqrt{N}$, you get $O(\log \log N)$ time.
-
-\section{ Show that Vector Cover is in NPC }
-Vertex Cover is defined as a set of nodes such that every edge in the graph is incident to at least one node in the set.
-\subsection{Converting to a Decision Problem}
-For this problem, we will consider the decision version of the problem defined as follows:\\
-Input: A graph $G$, and an integer $k$\\
-Output: Yes, if $G$ contains a vertex cover of size $k$, no otherwise.
-
-\subsection{k-independent set}
-The k-independent set decision problem is defined as follows:\\
-Input: A graph $G$, and an integer $k$\\
-Output: Yes, if $G$ contains an independent set of size $k$, no otherwise.\\
-\subsection{Claim: The k-independent set problem reduces to the Vertex Cover problem.}
-Let's assume we have a polynomial time solution to the k-independent set problem.\\
-Let's assume that we have a vertex cover $V$ in the graph $G$ of size $k$. This means that every edge in the graph is incident to one of the nodes in $V$. \\
-Let's consider the set $V' = G - V$. No two nodes in $V'$ have an edge between them, because if an edge was between two nodes $u$ and $v$, then one of $u$ and $v$ would be in $V$.\\
-This means that $V'$ is a independent set of length $n-k$.\\
-Hence, if we can solve the Vertex Cover problem in polynomial time, we can solve the k-independent set problem is polynomial time as well.
+\section{ Identities }
+\subsection{ Log Rules }
+\begin{enumerate}
+    \item $a = b^c <=> log_c(b)$
+    \item $a = b^{log_b(a)}$
+    \item $log(a b) = log(a) + log(b)$
+    \item $log_b(a) = log(a)/log(b)$
+    \item $log_b(1/a) = -log_b(a)$
+    \item $a^{log_b(c)} = c^{log_b(a)}$
+    \end{enumerate}
+\subsection{Summation Rules}
+\begin{enumerate}
+    \item $\sum_{i = 1}^n i = 1/2(k(k+1))$
+    \item $\sum_{i = 1}^n i^2 = 1/6(k(k+1)(2k+1))$
+    \item $\sum_{i = 1}^n i^3 = 1/4(n^2 (n+1)^2))$
+    \item $\sum_{i = 1}^n i * 2^i = (k-1) * 2^{k+1} + 2$
+\end{enumerate}
 
 \section{ Min Degree Spanning Tree }
 \subsection{Modifying the problem into a decision problem}
